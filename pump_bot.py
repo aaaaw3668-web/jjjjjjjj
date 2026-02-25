@@ -10,7 +10,7 @@ TELEGRAM_BOT_TOKEN = '7446722367:AAFfl-bNGvYiU6_GpNsFeRmo2ZNZMJRx47I'
 PRICE_INCREASE_THRESHOLD = 1.5  # Порог для роста цены
 PRICE_DECREASE_THRESHOLD = -50  # Порог для падения цены
 TIME_WINDOW = 60 * 5
-MAX_ALERTS_PER_DAY = 3
+MAX_ALERTS_PER_DAY = 10
 
 # Настройки запросов
 REQUEST_TIMEOUT = 10  # Таймаут для всех запросов
@@ -475,3 +475,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
