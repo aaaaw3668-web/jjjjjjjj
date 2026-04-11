@@ -61,7 +61,7 @@ def generate_links(symbol):
     coinglass_symbol = f"Binance_{symbol}"
     return {
         'coinglass': f"https://www.coinglass.com/tv/{coinglass_symbol}",
-        'tradingview': f"https://www.tradingview.com/chart/?symbol=BINANCE:{symbol}",
+        'tradingview': f"https://www.tradingview.com/chart/?symbol=BINANCE%3A{symbol}",
         'dextools': f"https://www.dextools.io/app/en/ether/pair-explorer/{clean_symbol}",
         'binance': f"https://www.binance.com/ru/trade/{symbol}",
         'bybit': f"https://www.bybit.com/trade/usdt/{symbol}"
@@ -95,26 +95,31 @@ def send_telegram_notification(chat_id, message, symbol, exchange):
 
     # Используем моноширинный шрифт для символа
     monospace_symbol = f"<code>{symbol}</code>"
+    
+    # Заменяем символ в сообщении
+    message = message.replace(symbol, monospace_symbol)
 
     links = generate_links(symbol)
+    
+    # Формируем сообщение с кликабельными ссылками (без лишних пробелов)
     message_with_links = (
         f"{message}\n\n"
         f"🔗 <b>Быстрый анализ:</b>\n"
-        f"• 📊 <a href='{links['coinglass']}'>Coinglass</a>\n"
+        f"• 📊 <a href='{links['coinglass']}'>Coinglass TV</a>\n"
         f"• 📈 <a href='{links['tradingview']}'>TradingView</a>\n"
         f"• 💰 <a href='{links['binance']}'>Binance</a>\n"
         f"• ⚡ <a href='{links['bybit']}'>Bybit</a>"
     )
-
-    # Заменяем обычное название символа на моноширинное
-    message_with_links = message_with_links.replace(symbol, monospace_symbol)
 
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
         'chat_id': chat_id,
         'text': message_with_links,
         'parse_mode': 'HTML',
-        'disable_web_page_preview': False
+        'disable_web_page_preview': False,  # True - скрыть превью, False - показать
+        'link_preview_options': {
+            'is_disabled': False  # Явно разрешаем превью ссылок
+        }
     }
     try:
         response = requests.post(url, json=payload, timeout=REQUEST_TIMEOUT)
