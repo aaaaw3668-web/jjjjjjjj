@@ -57,8 +57,10 @@ def make_request_with_retry(url, params=None, timeout=REQUEST_TIMEOUT, max_retri
 def generate_links(symbol):
     """Генерация ссылок на аналитические ресурсы"""
     clean_symbol = symbol.replace('USDT', '').replace('1000', '')
+    # Для Coinglass TV используем формат Binance_НАЗВАНИЕUSDT
+    coinglass_symbol = f"Binance_{symbol}"
     return {
-        'coinglass': f"https://www.coinglass.com/pro/futures/LiquidationHeatMapModel3?coin={clean_symbol}&type=pair",
+        'coinglass': f"https://www.coinglass.com/tv/{coinglass_symbol}",
         'tradingview': f"https://www.tradingview.com/chart/?symbol=BINANCE:{symbol}",
         'dextools': f"https://www.dextools.io/app/en/ether/pair-explorer/{clean_symbol}",
         'binance': f"https://www.binance.com/ru/trade/{symbol}",
